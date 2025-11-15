@@ -18,17 +18,42 @@ export default function App() {
     setUser(null);
   };
 
+  const toggleAuth = () => setIsRegister(prev => !prev);
+
+  // Если пользователь не авторизован, показываем форму
   if (!user) {
-    return isRegister 
-      ? <Register onRegister={setUser} /> 
-      : <Login onLogin={setUser} />;
+    return (
+      <div>
+        {isRegister ? <Register onRegister={setUser} /> : <Login onLogin={setUser} />}
+        <p
+          style={{
+            textAlign: "center",
+            marginTop: "15px",
+            color: "#cfcfcf",
+            cursor: "pointer"
+          }}
+          onClick={toggleAuth}
+        >
+          {isRegister
+            ? "Уже есть аккаунт? Войти"
+            : "Нет аккаунта? Зарегистрироваться"}
+        </p>
+      </div>
+    );
   }
 
+  // Если пользователь авторизован, показываем страницу
   return (
     <div className="page">
       <header className="header">
         <div className="logo">MyService</div>
-        <button onClick={handleLogout} className="btn-primary" style={{ fontSize: '14px', padding: '8px 15px' }}>Выйти</button>
+        <button
+          onClick={handleLogout}
+          className="btn-primary"
+          style={{ fontSize: "14px", padding: "8px 15px" }}
+        >
+          Выйти
+        </button>
       </header>
 
       <ProtectedRoute user={user}>
