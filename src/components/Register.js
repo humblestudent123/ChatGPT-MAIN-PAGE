@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-export default function Register({ onRegister }) {
+export default function Register({ onRegister, toggleAuth }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // состояние для чекбокса
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
   const handleRegister = (e) => {
@@ -27,7 +27,6 @@ export default function Register({ onRegister }) {
       <div className="auth-form">
         <h1>Регистрация</h1>
         <form onSubmit={handleRegister}>
-          {/* Email */}
           <input
             type="email"
             placeholder="Email"
@@ -36,7 +35,6 @@ export default function Register({ onRegister }) {
             className="auth-input"
           />
 
-          {/* Пароль */}
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Пароль"
@@ -45,7 +43,6 @@ export default function Register({ onRegister }) {
             className="auth-input"
           />
 
-          {/* Checkbox показать пароль */}
           <label style={{ display: "block", marginBottom: "15px", fontSize: "14px" }}>
             <input
               type="checkbox"
@@ -56,16 +53,31 @@ export default function Register({ onRegister }) {
             Показать пароль
           </label>
 
-          <button type="submit" className="btn-primary">Зарегистрироваться</button>
           {error && <p>{error}</p>}
+
+          <button type="submit" className="btn-primary">Зарегистрироваться</button>
         </form>
+
+        <div style={{ textAlign: "center", marginTop: "15px" }}>
+          <button
+            onClick={toggleAuth}
+            style={{
+              background: "none",
+              border: "none",
+              color: "#7b5dff",
+              cursor: "pointer",
+              fontSize: "14px",
+              textDecoration: "underline"
+            }}
+          >
+            Уже есть аккаунт? Войти
+          </button>
+        </div>
       </div>
 
       <div
         className="auth-image"
-        style={{
-          background: "url('/chatgpt-logo-chat-gpt-icon-on-black-background-free-vector.jpg') center/cover no-repeat"
-        }}
+        style={{ background: "url('/chatGPT.png') center/cover no-repeat" }}
       ></div>
     </div>
   );

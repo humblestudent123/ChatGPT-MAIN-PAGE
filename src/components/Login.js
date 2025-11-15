@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Login({ onLogin }) {
+export default function Login({ onLogin, toggleAuth }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -22,9 +22,8 @@ export default function Login({ onLogin }) {
   return (
     <div className="auth-container">
       <div className="auth-form">
-        <h1>Вход в систему</h1>
+        <h1>Вход</h1>
         <form onSubmit={handleLogin}>
-          {/* Email */}
           <input
             type="email"
             placeholder="Email"
@@ -33,7 +32,6 @@ export default function Login({ onLogin }) {
             className="auth-input"
           />
 
-          {/* Пароль */}
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Пароль"
@@ -42,7 +40,6 @@ export default function Login({ onLogin }) {
             className="auth-input"
           />
 
-          {/* Checkbox показать пароль */}
           <label style={{ display: "block", marginBottom: "15px", fontSize: "14px" }}>
             <input
               type="checkbox"
@@ -53,19 +50,31 @@ export default function Login({ onLogin }) {
             Показать пароль
           </label>
 
-          <button type="submit" className="btn-primary">Войти</button>
           {error && <p>{error}</p>}
+
+          <button type="submit" className="btn-primary">Войти</button>
         </form>
+
+        <div style={{ textAlign: "center", marginTop: "15px" }}>
+          <button
+            onClick={toggleAuth}
+            style={{
+              background: "none",
+              border: "none",
+              color: "#7b5dff",
+              cursor: "pointer",
+              fontSize: "14px",
+              textDecoration: "underline"
+            }}
+          >
+            Нет аккаунта? Зарегистрироваться
+          </button>
+        </div>
       </div>
 
       <div
         className="auth-image"
-        style={{
-          background: "url('/chatGPT.png",
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-        }}
+        style={{ background: "url('/chatGPT.png') center/cover no-repeat" }}
       ></div>
     </div>
   );

@@ -20,29 +20,20 @@ export default function App() {
 
   const toggleAuth = () => setIsRegister(prev => !prev);
 
-  // Если пользователь не авторизован, показываем форму
+  // Если пользователь не авторизован
   if (!user) {
     return (
-      <div>
-        {isRegister ? <Register onRegister={setUser} /> : <Login onLogin={setUser} />}
-        <p
-          style={{
-            textAlign: "center",
-            marginTop: "15px",
-            color: "#cfcfcf",
-            cursor: "pointer"
-          }}
-          onClick={toggleAuth}
-        >
-          {isRegister
-            ? "Уже есть аккаунт? Войти"
-            : "Нет аккаунта? Зарегистрироваться"}
-        </p>
+      <div className="auth-page">
+        {isRegister ? (
+          <Register onRegister={setUser} toggleAuth={toggleAuth} />
+        ) : (
+          <Login onLogin={setUser} toggleAuth={toggleAuth} />
+        )}
       </div>
     );
   }
 
-  // Если пользователь авторизован, показываем страницу
+  // Если пользователь авторизован
   return (
     <div className="page">
       <header className="header">
