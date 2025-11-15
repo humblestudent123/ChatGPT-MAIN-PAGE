@@ -61,7 +61,10 @@ export default function Login({ onLogin }) {
       <div
         className="auth-image"
         style={{
-          background: "url('/chatgpt-logo-chat-gpt-icon-on-black-background-free-vector.jpg') center/cover no-repeat"
+          background: "url('/chatGPT.png",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
         }}
       ></div>
     </div>
