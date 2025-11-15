@@ -8,15 +8,23 @@ export default function Login({ onLogin, toggleAuth }) {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(u => u.email === email && u.password === password);
 
-    if (user) {
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      onLogin(user);
-    } else {
-      setError("Неверный email или пароль");
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const user = users.find(u => u.email === email);
+
+    if (!user) {
+      setError("Пользователь с таким email не найден");
+      return;
     }
+
+    if (user.password !== password) {
+      setError("Неверный пароль");
+      return;
+    }
+
+    // Авторизация успешна
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    onLogin(user);
   };
 
   return (
@@ -50,13 +58,15 @@ export default function Login({ onLogin, toggleAuth }) {
             Показать пароль
           </label>
 
-          {error && <p>{error}</p>}
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
           <button type="submit" className="btn-primary">Войти</button>
         </form>
 
+        {/* Переключатель на регистрацию */}
         <div style={{ textAlign: "center", marginTop: "15px" }}>
           <button
+            type="button"
             onClick={toggleAuth}
             style={{
               background: "none",

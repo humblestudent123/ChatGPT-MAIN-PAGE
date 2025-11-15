@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import bcrypt from "bcryptjs";
 
 export default function Register({ onRegister, toggleAuth }) {
   const [email, setEmail] = useState("");
@@ -6,19 +7,37 @@ export default function Register({ onRegister, toggleAuth }) {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+
+    // Проверка email
+    if (!email.match(/^\S+@\S+\.\S+$/)) {
+      setError("Введите корректный email");
+      return;
+    }
+
+    // Проверка пароля
+    if (password.length < 6) {
+      setError("Пароль должен быть не меньше 6 символов");
+      return;
+    }
+
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
+    // Проверка на существующего пользователя
     if (users.find(u => u.email === email)) {
       setError("Пользователь с таким email уже существует");
       return;
     }
 
-    const newUser = { id: Date.now(), email, password };
+    // Хэшируем пароль
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = { id: Date.now(), email, password: hashedPassword };
     users.push(newUser);
     localStorage.setItem("users", JSON.stringify(users));
     localStorage.setItem("currentUser", JSON.stringify(newUser));
+
     onRegister(newUser);
   };
 
@@ -53,13 +72,14 @@ export default function Register({ onRegister, toggleAuth }) {
             Показать пароль
           </label>
 
-          {error && <p>{error}</p>}
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
           <button type="submit" className="btn-primary">Зарегистрироваться</button>
         </form>
 
         <div style={{ textAlign: "center", marginTop: "15px" }}>
           <button
+            type="button"
             onClick={toggleAuth}
             style={{
               background: "none",
